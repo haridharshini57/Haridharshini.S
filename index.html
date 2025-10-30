@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haridharshini Portfolio</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- React and ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide-react/dist/umd/lucide-react.js"></script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-white">
+
+<div id="root"></div>
+
+<script type="text/javascript">
+const { useState, useEffect } = React;
+const { Menu, X } = lucideReact;
+
+// Placeholder Components (you can style later)
+function Hero() { return <section id="home" class="min-h-screen flex items-center justify-center"><h1 class="text-5xl font-bold">Welcome</h1></section> }
+function About() { return <section id="about" class="min-h-screen flex items-center justify-center"><h1 class="text-4xl">About Section</h1></section> }
+function Skills() { return <section id="skills" class="min-h-screen flex items-center justify-center"><h1 class="text-4xl">Skills Section</h1></section> }
+function Projects() { return <section id="projects" class="min-h-screen flex items-center justify-center"><h1 class="text-4xl">Projects Section</h1></section> }
+function Contact() { return <section id="contact" class="min-h-screen flex items-center justify-center"><h1 class="text-4xl">Contact Section</h1></section> }
+function Footer() { return <footer class="py-6 text-center border-t border-slate-800">© 2025 Haridharshini</footer> }
+
+function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id) => {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <div>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled ? 'bg-slate-950/95 backdrop-blur-lg border-b border-slate-800' : 'bg-transparent'
+      }`}>
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div class="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">Haridharshini</div>
+
+          <div class="hidden md:flex space-x-8">
+            {['home','about','skills','projects','contact'].map(s =>
+              <button onClick={() => scrollToSection(s)} class="hover:text-cyan-400 transition">{s.charAt(0).toUpperCase()+s.slice(1)}</button>
+            )}
+          </div>
+
+          <button class="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {isMenuOpen && (
+          <div class="md:hidden space-y-4 p-4">
+            {['home','about','skills','projects','contact'].map(s =>
+              <button onClick={() => scrollToSection(s)} class="block w-full text-left hover:text-cyan-400">{s.charAt(0).toUpperCase()+s.slice(1)}</button>
+            )}
+          </div>
+        )}
+      </nav>
+
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Contact />
+      <Footer />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+
+</body>
+</html>
